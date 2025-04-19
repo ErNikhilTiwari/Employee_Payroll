@@ -2,14 +2,18 @@ package com.example.employee_payroll.controller;
 
 import com.example.employee_payroll.model.Employee;
 import com.example.employee_payroll.repository.EmployeeRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/employees")
+
+@Validated
 
 public class EmployeeController {
 
@@ -32,13 +36,13 @@ public class EmployeeController {
 
     // POST Create New Employee
     @PostMapping
-    public Employee createEmployee(@RequestBody Employee emp) {
+    public Employee createEmployee(@Valid @RequestBody Employee emp) {
         return repository.save(emp);
     }
 
     // PUT Update Employee
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee empDetails) {
+    public ResponseEntity<Employee> updateEmployee(@Valid @PathVariable Long id, @RequestBody Employee empDetails) {
         return repository.findById(id).map(emp -> {
             emp.setName(empDetails.getName());
             emp.setSalary(empDetails.getSalary());
